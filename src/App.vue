@@ -1,9 +1,8 @@
 <template>
-    <date-picker />
+    <router-view />
 </template>
 
 <script setup lang="ts">
-import DatePicker from '@/components/date-picker.vue';
 import '@vuepic/vue-datepicker/dist/main.css';
 </script>
 
