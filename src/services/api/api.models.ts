@@ -4,6 +4,7 @@ export interface SourceDto {
 }
 
 export interface NewClassDto {
-    date: string;
+    // UNIX timestamp in seconds
+    date: number;
     sources: SourceDto[];
 }

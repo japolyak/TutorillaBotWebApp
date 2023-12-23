@@ -83,10 +83,10 @@ const setTelegramMainButtonState = (): void => {
 };
 
 const planNewClass = (): void => {
-    if (privateCourseId.value == null || date.value == null || items.value == null) return;
+    if (privateCourseId.value == null || date.value == null) return;
 
     const payload: NewClassDto = {
-        date: "someDate",
+        date: date.value.getTime() / 1000,
         sources: []
     };
 
