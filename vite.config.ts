@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, mergeConfig, type UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url';
 
@@ -7,11 +7,11 @@ export default defineConfig({
     plugins: [vue()],
     resolve: {
     // https://vitejs.dev/config/shared-options.html#resolve-alias
-    alias: {
-        '@': fileURLToPath(new URL('./src', import.meta.url)),
-        '~': fileURLToPath(new URL('./node_modules', import.meta.url)),
-    },
-    extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
-    dedupe: ['vue'],
+		alias: {
+			'@': fileURLToPath(new URL('./src', import.meta.url)),
+			'~': fileURLToPath(new URL('./node_modules', import.meta.url)),
+		},
+		extensions: ['.js', '.json', '.jsx', '.mjs', '.ts', '.tsx', '.vue'],
+		dedupe: ['vue'],
     },
 })
