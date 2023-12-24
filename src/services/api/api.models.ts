@@ -8,3 +8,7 @@ export interface NewClassDto {
     date: number;
     sources: SourceDto[];
 }
+
+export interface InitDataDto {
+    initData: string;
+}
