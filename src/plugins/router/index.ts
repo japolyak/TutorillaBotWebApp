@@ -27,6 +27,6 @@ const router = createRouter({
     ],
 });
 
-router.beforeEach((to, from) => telegramUserAuthentication(window.Telegram.WebApp.initData));
+router.beforeEach((to, from, next) => telegramUserAuthentication(window.Telegram.WebApp.initData, next));
 
 export default router;
