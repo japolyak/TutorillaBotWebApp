@@ -8,6 +8,7 @@ function transformInitData(initData: string): TransformInitData {
 }
 
 export function telegramValidation(initData: string): void {
+    console.log(initData);
    const validatingData = Object.fromEntries(new URLSearchParams(initData));
    console.log(validatingData);
 }
