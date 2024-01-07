@@ -1,6 +1,6 @@
 <template>
     <date-picker :request-fn="sendRequest" @created="resetAssignment" />
-    
+
     <v-switch v-model="setAssignment" label="Set assignment" color="primary" hide-details :class="elementTheme" />
 
     <template v-if="setAssignment">
@@ -66,7 +66,7 @@ const privateCourseId = computed(() => {
   return isNaN(privateCourseId) ? null : privateCourseId;
 });
 
-const sendRequest = (planedDate: number): void => {
+const sendRequest = (planedDate: Date): void => {
     if (privateCourseId.value == null) return;
 
     const payload: NewClassDto = {

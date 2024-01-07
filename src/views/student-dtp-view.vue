@@ -18,7 +18,7 @@ const privateCourseId = computed(() => {
   return isNaN(privateCourseId) ? null : privateCourseId;
 });
 
-const sendRequest = (planedDate: number): void => {
+const sendRequest = (planedDate: Date): void => {
     if (privateCourseId.value == null) return;
 
     const payload: NewClassDto = {

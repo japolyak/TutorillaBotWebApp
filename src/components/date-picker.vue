@@ -32,7 +32,8 @@ const planClass = (): void => {
     if (date.value == null) return;
 	console.log(date.value);
 
-    const request = props.requestFn(date.value.getTime() / 1000);
+    // const request = props.requestFn(date.value.getTime() / 1000);
+    const request = props.requestFn(date.value);
 
     window.Telegram.WebApp.MainButton.hide();
     date.value = null;
