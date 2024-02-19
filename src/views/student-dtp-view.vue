@@ -6,7 +6,7 @@
 import DatePicker from '@/components/date-picker.vue';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { ApplicationClient } from '@/services/api/application-client';
+import { PrivateCourseClient } from '@/services/api/private-course-client';
 import type { NewClassDto } from '@/services/api/api.models'
 
 const route = useRoute();
@@ -26,6 +26,6 @@ const sendRequest = (planedDate: Date): void => {
         sources: []
     };
 
-    const request = ApplicationClient.planNewClass(privateCourseId.value, payload);
+    const request = PrivateCourseClient.planNewClass(privateCourseId.value, payload);
 };
 </script>

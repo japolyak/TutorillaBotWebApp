@@ -32,7 +32,7 @@
 import DatePicker from '@/components/date-picker.vue';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { ApplicationClient } from '@/services/api/application-client';
+import { PrivateCourseClient } from '@/services/api/private-course-client';
 import type { NewClassDto } from '@/services/api/api.models'
 
 interface Item {
@@ -80,7 +80,7 @@ const sendRequest = (planedDate: Date): void => {
             .map((item: Item) => ({ title: item.title, assignment: item.value  as string }));
     }
 
-    const request = ApplicationClient.planNewClass(privateCourseId.value, payload);
+    const request = PrivateCourseClient.planNewClass(privateCourseId.value, payload);
 };
 
 const resetAssignment = () => {
