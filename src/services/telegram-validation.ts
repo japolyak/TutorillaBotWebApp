@@ -1,8 +1,8 @@
-import { TelegramUserClient } from '@/services/api/telegram-user-client';
+import { TelegramUserClient } from '@/services/api/clients/telegram-user-client';
 import type { NavigationGuardNext } from 'vue-router';
 
 export function telegramUserAuthentication(initData: string, next: NavigationGuardNext): void {
-    if (!initData) {
+	if (!initData) {
         next(false);
         return;
     }

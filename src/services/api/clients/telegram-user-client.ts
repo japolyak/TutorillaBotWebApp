@@ -1,4 +1,4 @@
-import { httpClient } from './http-client';
+import { httpClient } from '../http-client';
 
 export class TelegramUserClient{
     public static async validateInitData(initData: string): Promise<any> {

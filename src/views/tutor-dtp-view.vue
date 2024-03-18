@@ -32,7 +32,7 @@
 import DatePicker from '@/components/date-picker.vue';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { PrivateCourseClient } from '@/services/api/private-course-client';
+import { PrivateCourseClient } from '@/services/api/clients/private-course-client';
 import type { NewClassDto } from '@/services/api/api.models'
 
 interface Item {
