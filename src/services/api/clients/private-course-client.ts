@@ -6,7 +6,6 @@ export class PrivateCourseClient {
         const request = httpClient.post(`private-courses/${privateCourseId}/new-class/`, { json: payload });
     }
 
-
 	public static async test(): Promise<any> {
         const request = await httpClient.post(``, { json: { test: 'test' } });
     }
