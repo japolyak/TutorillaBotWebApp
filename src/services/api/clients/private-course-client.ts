@@ -7,6 +7,6 @@ export class PrivateCourseClient {
     }
 
 	public static async test(): Promise<any> {
-        const request = await httpClient.post(``, { json: { test: 'test' } });
+        const request = await httpClient.post(`test`, { json: { test: 'test' } });
     }
 }
