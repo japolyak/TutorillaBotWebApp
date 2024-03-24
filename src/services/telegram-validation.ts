@@ -1,12 +1,12 @@
 import { TelegramUserClient } from '@/services/api/clients/telegram-user-client';
 import type { NavigationGuardNext } from 'vue-router';
 
-export function telegramUserAuthentication(initData: string, next: NavigationGuardNext): void {
+export async function telegramUserAuthentication(initData: string, next: NavigationGuardNext): Promise<void> {
 	if (!initData) {
         next(false);
         return;
     }
 
-    const request = TelegramUserClient.validateInitData(initData);
+    const request = await TelegramUserClient.validateInitData(initData);
     next();
 }

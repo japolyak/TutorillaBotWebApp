@@ -12,16 +12,16 @@ const router = createRouter({
 			path: '/',
 			component: Dashboard,
             children: [
-                // {
-                //     path: '/tutor/private-course/:privateCourseId',
-                //     name: 'DateTimePickerForTutor',
-                //     component: TutorDtpView,
-                // },
-                // {
-                //     path: '/student/private-course/:privateCourseId',
-                //     name: 'DateTimePickerForStudent',
-                //     component: StudentDtpView,
-                // },
+                {
+                    path: '/tutor/private-course/:privateCourseId',
+                    name: 'DateTimePickerForTutor',
+                    component: TutorDtpView,
+                },
+                {
+                    path: '/student/private-course/:privateCourseId',
+                    name: 'DateTimePickerForStudent',
+                    component: StudentDtpView,
+                },
 				{
 					path: 'test',
 					name: 'Test',
@@ -33,6 +33,6 @@ const router = createRouter({
     ],
 });
 
-router.beforeEach((to, from, next) => telegramUserAuthentication(window.Telegram.WebApp.initData, next));
+router.beforeEach(async (to, from, next) => await telegramUserAuthentication(window.Telegram.WebApp.initData, next));
 
 export default router;
