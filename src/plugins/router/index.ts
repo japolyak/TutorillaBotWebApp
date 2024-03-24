@@ -33,6 +33,6 @@ const router = createRouter({
     ],
 });
 
-// router.beforeEach((to, from, next) => telegramUserAuthentication(window.Telegram.WebApp.initData, next));
+router.beforeEach((to, from, next) => telegramUserAuthentication(window.Telegram.WebApp.initData, next));
 
 export default router;
