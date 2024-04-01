@@ -1,6 +1,5 @@
 <template>
     <vue-date-picker v-model="date" @update:model-value="setTelegramMainButtonState" />
-    <v-btn text="Test button" color="primary" class="mt-4" @click="planClass" />
 </template>
 
 <script setup lang="ts">
