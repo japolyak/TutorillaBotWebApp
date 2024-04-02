@@ -84,7 +84,7 @@ const sendRequest = async (planedDate: Date): Promise<void> => {
 
     const response = await PrivateCourseClient.planNewClass(privateCourseId.value, payload);
 
-	if (response?.status !== 200) {
+	if (response?.status !== 201) {
 		showSnackbar({
 			message: 'Error occurred',
 			status: 'error',
