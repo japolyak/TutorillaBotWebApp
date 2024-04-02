@@ -34,6 +34,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { PrivateCourseClient } from '@/services/api/clients/private-course-client';
 import type { NewClassDto } from '@/services/api/api.models'
+import { useActionSnackbarStore } from '@/stores/snackbar-store';
 
 interface Item {
     title: string;
@@ -42,6 +43,7 @@ interface Item {
 }
 
 const route = useRoute();
+const { showSnackbar } = useActionSnackbarStore();
 
 const setAssignment = ref(false);
 const applicationTheme = ref<string | null>(null);
@@ -66,7 +68,7 @@ const privateCourseId = computed(() => {
   return isNaN(privateCourseId) ? null : privateCourseId;
 });
 
-const sendRequest = (planedDate: Date): void => {
+const sendRequest = async (planedDate: Date): Promise<void> => {
     if (privateCourseId.value == null) return;
 
     const payload: NewClassDto = {
@@ -80,7 +82,20 @@ const sendRequest = (planedDate: Date): void => {
             .map((item: Item) => ({ title: item.title, assignment: item.value  as string }));
     }
 
-    const request = PrivateCourseClient.planNewClass(privateCourseId.value, payload);
+    const response = await PrivateCourseClient.planNewClass(privateCourseId.value, payload);
+
+	if (response?.status !== 200) {
+		showSnackbar({
+			message: 'Error occurred',
+			status: 'error',
+		});
+		return;
+	}
+
+	showSnackbar({
+		message: 'Class scheduled successfully!',
+		status: 'success',
+	});
 };
 
 const resetAssignment = () => {

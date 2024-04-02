@@ -8,8 +8,10 @@ import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { PrivateCourseClient } from '@/services/api/clients/private-course-client';
 import type { NewClassDto } from '@/services/api/api.models'
+import { useActionSnackbarStore } from '@/stores/snackbar-store';
 
 const route = useRoute();
+const { showSnackbar } = useActionSnackbarStore();
 
 const privateCourseId = computed(() => {
   if (Array.isArray(route.params.privateCourseId)) return null;
@@ -18,7 +20,7 @@ const privateCourseId = computed(() => {
   return isNaN(privateCourseId) ? null : privateCourseId;
 });
 
-const sendRequest = (planedDate: Date): void => {
+const sendRequest = async (planedDate: Date): Promise<void> => {
     if (privateCourseId.value == null) return;
 
     const payload: NewClassDto = {
@@ -26,6 +28,19 @@ const sendRequest = (planedDate: Date): void => {
         sources: []
     };
 
-    const request = PrivateCourseClient.planNewClass(privateCourseId.value, payload);
+    const response = await PrivateCourseClient.planNewClass(privateCourseId.value, payload);
+
+	if (response?.status !== 200) {
+		showSnackbar({
+			message: 'Error occurred',
+			status: 'error',
+		});
+		return;
+	}
+
+	showSnackbar({
+		message: 'Class scheduled successfully!',
+		status: 'success',
+	});
 };
 </script>
