@@ -1,12 +1,13 @@
 import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { type UserDto, Role } from '@/services/api/api.models';
+import { type UserDto } from '@/services/api/api.models';
 
 
 export const useUserStore = defineStore('user-store', () => {
 	const user = ref<UserDto | null>(null);
 
 	const isTutor = computed(() => user.value?.is_tutor ?? false);
+	const userTimeZone = computed(() => user.value?.time_zone ?? null);
 
 	const setUser = (payload: UserDto | null) => {
 		if (payload == null) {
@@ -19,6 +20,7 @@ export const useUserStore = defineStore('user-store', () => {
 
     return {
 		isTutor,
+		userTimeZone,
 		setUser,
     };
 });

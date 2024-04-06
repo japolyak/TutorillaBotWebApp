@@ -32,8 +32,8 @@ const privateCourseId = computed(() => {
   return isNaN(privateCourseIdFromRoute) ? null : privateCourseIdFromRoute;
 });
 
-const sendRequest = async (planedDate: Date | null): Promise<void> => {
-    if (privateCourseId.value == null || planedDate == null) return;
+const sendRequest = async (planedDate: Date): Promise<void> => {
+    if (privateCourseId.value == null) return;
 
     const payload: NewClassDto = {
         date: planedDate,
