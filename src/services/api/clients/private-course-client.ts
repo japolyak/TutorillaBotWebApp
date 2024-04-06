@@ -6,7 +6,7 @@ export class PrivateCourseClient {
     public static async planNewClass(privateCourseId: number, payload: NewClassDto): Promise<KyResponse | null> {
 		// TODO - implement sending role
 		try {
-			const request = await httpClient.post(`private-courses/${privateCourseId}/new-class/`, {json: payload});
+			const request = await httpClient.post(`private-courses/${privateCourseId}/new-class/`, { json: payload });
 
 			return request;
 		} catch {
