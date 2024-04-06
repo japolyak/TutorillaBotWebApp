@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import TutorDtpView from '@/views/tutor-dtp-view.vue';
+import PlanClassView from '@/views/plan-class-view.vue';
 import TestView from '@/views/test-view.vue';
 import Dashboard from '@/components/dashboard.vue';
 import { telegramUserAuthentication } from '@/services/telegram-validation'
@@ -13,8 +13,8 @@ const router = createRouter({
             children: [
                 {
                     path: '/private-course/:privateCourseId',
-                    name: 'DateTimePickerForTutor',
-                    component: TutorDtpView,
+                    name: 'PlanClassView',
+                    component: PlanClassView,
                 },
 				{
 					path: 'test',
