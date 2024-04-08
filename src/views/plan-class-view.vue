@@ -11,10 +11,10 @@
 <script setup lang="ts">
 import DatePicker from '@/components/date-picker.vue';
 import Assignment from '@/components/assignment.vue';
-import { ref, onMounted, computed } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { PrivateCourseClient } from '@/services/api/clients/private-course-client';
-import type { NewClassDto } from '@/services/api/api.models'
+import { type NewClassDto, Role } from '@/services/api/api.models'
 import { useActionSnackbarStore } from '@/stores/snackbar-store';
 import { useUserStore } from '@/stores/user-store';
 
@@ -46,7 +46,9 @@ const sendRequest = async (planedDate: Date): Promise<void> => {
             .map((item) => ({ title: item.title, assignment: item.value  as string }));
     }
 
-    const response = await PrivateCourseClient.planNewClass(privateCourseId.value, payload);
+	const role = isTutor ? Role.tutor : Role.student;
+
+    const response = await PrivateCourseClient.planNewClass(privateCourseId.value, payload, role);
 
 	if (response?.status !== 201) {
 		showSnackbar({

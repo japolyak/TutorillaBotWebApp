@@ -6,6 +6,7 @@ import { type UserDto } from '@/services/api/api.models';
 export const useUserStore = defineStore('user-store', () => {
 	const user = ref<UserDto | null>(null);
 
+	const userInfo = computed(() => user.value);
 	const isTutor = computed(() => user.value?.is_tutor ?? false);
 	const userTimeZone = computed(() => user.value?.time_zone ?? null);
 
@@ -20,6 +21,7 @@ export const useUserStore = defineStore('user-store', () => {
 
     return {
 		isTutor,
+		userInfo,
 		userTimeZone,
 		setUser,
     };

@@ -1,7 +1,7 @@
 export enum Role {
-	admin = 'Admin',
-	tutor = 'Tutor',
-	student = 'Student',
+	admin = 'admin',
+	tutor = 'tutor',
+	student = 'student',
 }
 
 interface UserBaseDto {
