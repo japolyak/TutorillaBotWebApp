@@ -1,5 +1,5 @@
 <template>
-    <vue-date-picker v-model="date" @update:model-value="setTelegramMainButtonState" />
+    <vue-date-picker v-model="date" :format="dateFormat" @update:model-value="setTelegramMainButtonState" />
 <!--	<v-btn text="Test button" color="primary" class="mt-4" @click="planClass" />-->
 </template>
 
@@ -18,6 +18,7 @@ const props = defineProps({
 const { userTimeZone } = useUserStore();
 
 const date = ref<Date | null>(null);
+const dateFormat = ref('dd-MM-yyyy HH:mm');
 
 const setTelegramMainButtonState = (): void => {
     if (date.value) {
@@ -36,7 +37,7 @@ const planClass = (): void => {
 	const payload = new Date(Date.UTC(
 		date.value.getFullYear(),
 		date.value.getMonth(),
-		date.value.getDay(),
+		date.value.getDate(),
 		date.value.getHours() - userTimeZone,
 		date.value.getMinutes(),
 		date.value.getSeconds()
