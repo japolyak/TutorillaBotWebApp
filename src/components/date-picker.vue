@@ -42,7 +42,6 @@ const planClass = (): void => {
 		date.value.getMinutes(),
 		date.value.getSeconds()
 	));
-	console.log(payload);
 
     props.requestFn(payload);
 
