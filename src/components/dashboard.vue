@@ -5,5 +5,3 @@
         </router-view>
 	</v-container>
 </template>
-
-<script setup lang="ts" />

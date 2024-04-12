@@ -9,6 +9,7 @@ export const useUserStore = defineStore('user-store', () => {
 	const userInfo = computed(() => user.value);
 	const isTutor = computed(() => user.value?.is_tutor ?? false);
 	const userTimeZone = computed(() => user.value?.time_zone ?? null);
+	const locale = computed(() => user.value?.locale ?? 'en-US');
 
 	const setUser = (payload: UserDto | null) => {
 		if (payload == null) {
@@ -22,6 +23,7 @@ export const useUserStore = defineStore('user-store', () => {
     return {
 		isTutor,
 		userInfo,
+		locale,
 		userTimeZone,
 		setUser,
     };
