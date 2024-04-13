@@ -7,19 +7,33 @@
 		disable-year-select
 		month-name-format="long"
 		placeholder="Select Date"
+		@open="() => openDate = new Date"
+		@close="() => openDate = null"
 		@update:model-value="setTelegramMainButtonState"
 	>
+		<template #calendar-header="{ index, day }">
+			<div :class="index === 5 || index === 6 ? 'red-color' : ''">
+				{{ day }}
+			</div>
+		</template>
 		<template #action-row="{ internalModelValue, selectDate }">
-			<v-btn text="Cancel" min-width="97" size="small" variant="outlined" @click="closeMenu" />
-			<v-btn
-				text="Confirm"
-				color="#2481cc"
-				min-width="97"
-				size="small"
-				variant="flat"
-				:disabled="!confirmationAllowed(internalModelValue)"
-				@click="selectDate"
-			/>
+			<div class="d-flex flex-column w-100">
+				<div class="text-center mb-2">
+					{{ formatDate(internalModelValue) }}
+				</div>
+				<div class="d-flex justify-space-between">
+					<v-btn text="Cancel" min-width="97" size="small" variant="outlined" @click="closeMenu" />
+					<v-btn
+						text="Confirm"
+						color="#2481cc"
+						min-width="97"
+						size="small"
+						variant="flat"
+						:disabled="!confirmationAllowed(internalModelValue)"
+						@click="selectDate"
+					/>
+				</div>
+			</div>
 		</template>
 	</vue-date-picker>
 <!--	<v-btn text="Test button" color="primary" class="mt-4" @click="planClass" />-->
@@ -32,8 +46,6 @@ import { useUserStore } from '@/stores/user-store';
 import { format } from 'date-fns'
 import type { DatePickerInstance } from "@vuepic/vue-datepicker"
 
-const datepicker = ref<DatePickerInstance>(null);
-
 const emit = defineEmits(['created']);
 const props = defineProps({
     requestFn: {
@@ -41,17 +53,20 @@ const props = defineProps({
         required: true,
     },
 });
+
 const { userTimeZone, locale } = useUserStore();
 
 const date = ref<Date | null>(null);
+const openDate = ref<Date | null>(null);
 const dateFormat = ref('dd-MM-yyyy HH:mm');
+const datepicker = ref<DatePickerInstance>(null);
 
 const closeMenu = () => {
 	if (datepicker.value != null) datepicker.value.closeMenu();
 };
 
 const confirmationAllowed = (value: Date | null) => {
-	return value != null;
+	return !(value == null || formatDate(value, 'HH:mm') === formatDate(openDate.value, 'HH:mm'));
 };
 
 const setTelegramMainButtonState = (): void => {
@@ -65,10 +80,10 @@ const setTelegramMainButtonState = (): void => {
     window.Telegram.WebApp.MainButton.hide();
 };
 
-const formatDate = (date: Date | null) => {
+const formatDate = (date: Date | null, datetimeFormat: string = 'dd.MM.yyyy, HH:mm') => {
 	if (date == null) return '';
 
-	return format(date, 'dd.MM.yyyy, HH:mm');
+	return format(date, datetimeFormat);
 };
 
 const planClass = (): void => {
@@ -100,15 +115,18 @@ onMounted(() => window.Telegram.WebApp.MainButton.text = 'Plan class');
 	background: #2481cc;
 }
 
-
 .dp__today {
 	border: 1px solid #2481cc;
 }
 
-.dp__action_row {
-	display: flex;
-	justify-content: space-between;
-	gap: 12px;
-	padding-inline: 13px;
+//.dp__action_row {
+//	display: flex;
+//	justify-content: space-between;
+//	gap: 12px;
+//	padding-inline: 13px;
+//}
+
+.red-color {
+	color: red;
 }
 </style>
