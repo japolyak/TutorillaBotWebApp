@@ -10,7 +10,7 @@
 		month-name-format="long"
 		placeholder="Select Date"
 		@open="openPlanner"
-		@close="closePlanner"
+		@closed="closePlanner"
 		@update-month-year="handleMonthYear"
 		@update:model-value="setTelegramMainButtonState"
 	>
