@@ -1,6 +1,7 @@
 <template>
     <date-picker
 		:request-fn="sendRequest"
+		:course-id="privateCourseId"
 		@created="() => {
 			if (isTutor) assignmentRef?.resetAssignment();
 		}"
@@ -48,15 +49,15 @@ const sendRequest = async (planedDate: Date): Promise<void> => {
 
 	const role = isTutor ? Role.tutor : Role.student;
 
-    const response = await PrivateCourseClient.planNewClass(privateCourseId.value, payload, role);
-
-	if (response?.status !== 201) {
-		showSnackbar({
-			message: 'Error occurred',
-			status: 'error',
-		});
-		return;
-	}
+    // const response = await PrivateCourseClient.planNewClass(privateCourseId.value, payload, role);
+	//
+	// if (response?.status !== 201) {
+	// 	showSnackbar({
+	// 		message: 'Error occurred',
+	// 		status: 'error',
+	// 	});
+	// 	return;
+	// }
 
 	showSnackbar({
 		message: 'Class scheduled successfully!',

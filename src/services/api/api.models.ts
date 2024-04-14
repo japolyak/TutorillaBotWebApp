@@ -4,6 +4,12 @@ export enum Role {
 	student = 'student',
 }
 
+export enum ClassStatus {
+	Scheduled = 'scheduled',
+	Occurred = 'occurred',
+	Paid = 'paid',
+}
+
 interface UserBaseDto {
 	id: number
     first_name: string
@@ -21,7 +27,6 @@ export interface UserDto extends UserBaseDto {
     is_admin: boolean
 }
 
-
 export interface SourceDto {
     title: string;
     assignment: string;
@@ -30,4 +35,9 @@ export interface SourceDto {
 export interface NewClassDto {
     date: Date;
     sources: SourceDto[];
+}
+
+export interface ClassDto {
+    date: Date;
+	status: ClassStatus;
 }

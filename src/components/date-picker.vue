@@ -3,14 +3,23 @@
 		v-model="date"
 		ref="datepicker"
 		:locale="locale"
+		:loading="loading"
 		:format="dateFormat"
+		:markers="markers"
 		disable-year-select
 		month-name-format="long"
 		placeholder="Select Date"
-		@open="() => openDate = new Date"
+		@open="() => openDate = new Date()"
 		@close="() => openDate = null"
+		@update-month-year="handleMonthYear"
 		@update:model-value="setTelegramMainButtonState"
 	>
+		<template #marker="{ marker }">
+        	<span class="custom-marker" :class="marker.color" />
+        </template>
+		<template #marker-tooltip="{ tooltip }">
+        	{{ tooltip.text }}
+        </template>
 		<template #calendar-header="{ index, day }">
 			<div :class="index === 5 || index === 6 ? 'red-color' : ''">
 				{{ day }}
@@ -40,11 +49,12 @@
 </template>
 
 <script setup lang="ts">
-import VueDatePicker from '@vuepic/vue-datepicker'
-import { ref, onMounted, watchEffect } from 'vue';
+import VueDatePicker, { type DatePickerMarker, type DatePickerInstance } from '@vuepic/vue-datepicker'
+import { onMounted, ref, watchEffect, type PropType } from 'vue';
 import { useUserStore } from '@/stores/user-store';
 import { format } from 'date-fns'
-import type { DatePickerInstance } from "@vuepic/vue-datepicker"
+import { type ClassDto, ClassStatus } from '@/services/api/api.models'
+import { PrivateCourseClient } from '@/services/api/clients/private-course-client';
 
 const emit = defineEmits(['created']);
 const props = defineProps({
@@ -52,21 +62,84 @@ const props = defineProps({
         type: Function,
         required: true,
     },
+	courseId: {
+		type: Number as PropType<number | null>,
+		required: true,
+		default: null,
+	},
 });
 
 const { userTimeZone, locale } = useUserStore();
 
 const date = ref<Date | null>(null);
+const loading = ref(false);
 const openDate = ref<Date | null>(null);
+const markers = ref<DatePickerMarker[]>([]);
 const dateFormat = ref('dd-MM-yyyy HH:mm');
 const datepicker = ref<DatePickerInstance>(null);
 
+interface MonthYearChange {
+	instance: number;
+	month: number;
+	year: number;
+}
+
+async function loadClasses(month: number, year: number): Promise<ClassDto[]> {
+	if (props.courseId == null) return [];
+
+	loading.value = true;
+
+	const response = await PrivateCourseClient.getClassesByDate(props.courseId, month, year);
+
+	loading.value = false;
+
+	return response ?? [];
+}
+
+const handleMonthYear = async (a: MonthYearChange) => {
+	const classes = await loadClasses(a.month + 1, a.year);
+
+	markers.value = mapToDatePickerMarker(classes);
+}
+
+function mapToDatePickerMarker(data: ClassDto[]): DatePickerMarker[] {
+	return data.map((day) => {
+		let color = '';
+		let tooltipText = '';
+
+		switch (day.status) {
+			case ClassStatus.Occurred:
+				color = 'red';
+				tooltipText = `Occurred at ${formatDate(day.date, 'HH:mm')}`;
+				break;
+			case ClassStatus.Scheduled:
+				color = 'green';
+				tooltipText = `Scheduled at ${formatDate(day.date, 'HH:mm')}`;
+				break;
+			case ClassStatus.Paid:
+				color = 'blue';
+				tooltipText = `Paid. Occurred at ${formatDate(day.date, 'HH:mm')}`;
+				break;
+		}
+
+		const marker: DatePickerMarker = {
+			date: day.date,
+			color: color,
+			tooltip: [{ text: tooltipText }]
+		};
+
+		return marker;
+	});
+}
+
 const closeMenu = () => {
-	if (datepicker.value != null) datepicker.value.closeMenu();
+	datepicker.value?.closeMenu();
 };
 
 const confirmationAllowed = (value: Date | null) => {
-	return !(value == null || formatDate(value, 'HH:mm') === formatDate(openDate.value, 'HH:mm'));
+	if (value == null) return false;
+	// TODO - rethink implementation
+	return formatDate(value, 'HH:mm') !== formatDate(openDate.value, 'HH:mm');
 };
 
 const setTelegramMainButtonState = (): void => {
@@ -107,7 +180,15 @@ const planClass = (): void => {
 
 watchEffect(() => window.Telegram.WebApp.onEvent('mainButtonClicked', planClass));
 
-onMounted(() => window.Telegram.WebApp.MainButton.text = 'Plan class');
+onMounted(async () => {
+	window.Telegram.WebApp.MainButton.text = 'Plan class';
+
+	const currentDate = new Date();
+
+	const classes = await loadClasses(currentDate.getMonth() + 1, currentDate.getFullYear());
+
+	markers.value = mapToDatePickerMarker(classes);
+});
 </script>
 
 <style lang="scss">
@@ -128,5 +209,27 @@ onMounted(() => window.Telegram.WebApp.MainButton.text = 'Plan class');
 
 .red-color {
 	color: red;
+}
+
+.custom-marker {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 8px;
+	width: 8px;
+	border-radius: 100%;
+
+}
+
+.green {
+	background-color: green;
+}
+
+.red {
+	background-color: red;
+}
+
+.blue {
+	background-color: blue;
 }
 </style>
