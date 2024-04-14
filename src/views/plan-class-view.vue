@@ -2,9 +2,7 @@
     <date-picker
 		:request-fn="sendRequest"
 		:course-id="privateCourseId"
-		@created="() => {
-			if (isTutor) assignmentRef?.resetAssignment();
-		}"
+		@created="() => router.go(0)"
 	/>
 	<assignment v-if="isTutor" ref="assignmentRef" :application-theme="applicationTheme"  />
 </template>
@@ -13,13 +11,14 @@
 import DatePicker from '@/components/date-picker.vue';
 import Assignment from '@/components/assignment.vue';
 import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { PrivateCourseClient } from '@/services/api/clients/private-course-client';
 import { type NewClassDto, Role } from '@/services/api/api.models'
 import { useActionSnackbarStore } from '@/stores/snackbar-store';
 import { useUserStore } from '@/stores/user-store';
 
 const route = useRoute();
+const router = useRouter();
 const { showSnackbar } = useActionSnackbarStore();
 const { isTutor } = useUserStore();
 
