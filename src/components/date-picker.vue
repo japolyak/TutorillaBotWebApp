@@ -9,8 +9,8 @@
 		disable-year-select
 		month-name-format="long"
 		placeholder="Select Date"
-		@open="() => openDate = new Date()"
-		@close="() => openDate = null"
+		@open="openPlanner"
+		@close="closePlanner"
 		@update-month-year="handleMonthYear"
 		@update:model-value="setTelegramMainButtonState"
 	>
@@ -56,7 +56,6 @@ import { format } from 'date-fns'
 import { type ClassDto, ClassStatus } from '@/services/api/api.models'
 import { PrivateCourseClient } from '@/services/api/clients/private-course-client';
 
-const emit = defineEmits(['created']);
 const props = defineProps({
     requestFn: {
         type: Function,
@@ -101,6 +100,21 @@ const handleMonthYear = async (a: MonthYearChange) => {
 
 	markers.value = mapToDatePickerMarker(classes);
 }
+
+const openPlanner = async () => {
+	const currentDate = new Date();
+
+	openDate.value = currentDate;
+
+	const classes = await loadClasses(currentDate.getMonth() + 1, currentDate.getFullYear());
+
+	markers.value = mapToDatePickerMarker(classes);
+};
+
+const closePlanner = () => {
+	openDate.value = null;
+	markers.value = [];
+};
 
 function mapToDatePickerMarker(data: ClassDto[]): DatePickerMarker[] {
 	return data.map((day) => {
@@ -175,20 +189,11 @@ const planClass = (): void => {
 
     window.Telegram.WebApp.MainButton.hide();
     date.value = null;
-    emit('created');
 };
 
 watchEffect(() => window.Telegram.WebApp.onEvent('mainButtonClicked', planClass));
 
-onMounted(async () => {
-	window.Telegram.WebApp.MainButton.text = 'Plan class';
-
-	const currentDate = new Date();
-
-	const classes = await loadClasses(currentDate.getMonth() + 1, currentDate.getFullYear());
-
-	markers.value = mapToDatePickerMarker(classes);
-});
+onMounted(() => window.Telegram.WebApp.MainButton.text = 'Plan class');
 </script>
 
 <style lang="scss">

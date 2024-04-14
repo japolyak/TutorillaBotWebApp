@@ -3,6 +3,11 @@ import type { NavigationGuardNext } from 'vue-router';
 import { useUserStore } from '@/stores/user-store';
 
 export async function telegramUserAuthentication(initData: string, next: NavigationGuardNext): Promise<void> {
+	if (import.meta.env.VITE_APP_IS_DEV === 'true') {
+		next();
+		return;
+	}
+
 	if (!initData) {
         next(false);
         return;
