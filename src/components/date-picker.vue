@@ -92,7 +92,7 @@ async function loadClasses(month: number, year: number): Promise<ClassDto[]> {
 
 	loading.value = false;
 
-	return response ?? [];
+	return response?.items ?? [];
 }
 
 const handleMonthYear = async (a: MonthYearChange) => {

@@ -1,5 +1,5 @@
 import { httpClient } from '@/services/api/http-client';
-import type { NewClassDto, Role, ClassDto } from '@/services/api/api.models'
+import type { NewClassDto, Role, ClassDto, ItemsDto } from '@/services/api/api.models'
 import { type KyResponse} from 'ky';
 
 export class PrivateCourseClient {
@@ -13,9 +13,9 @@ export class PrivateCourseClient {
 		}
     }
 
-	public static async getClassesByDate(privateCourseId: number, month: number, year: number): Promise<ClassDto[] | null> {
+	public static async getClassesByDate(privateCourseId: number, month: number, year: number): Promise<ItemsDto<ClassDto> | null> {
 		try {
-			const request = await httpClient.get(`private-courses/${privateCourseId}/classes/month/${month}/year/${year}/`).json<ClassDto[]>();
+			const request = await httpClient.get(`private-courses/${privateCourseId}/classes/month/${month}/year/${year}/`).json<ItemsDto<ClassDto>>();
 
 			return request;
 		} catch {

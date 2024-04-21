@@ -10,6 +10,10 @@ export enum ClassStatus {
 	Paid = 'paid',
 }
 
+export interface ItemsDto<T> {
+	items: T[]
+}
+
 interface UserBaseDto {
 	id: number
     first_name: string
