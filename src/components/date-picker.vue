@@ -45,7 +45,6 @@
 			</div>
 		</template>
 	</vue-date-picker>
-<!--	<v-btn text="Test button" color="primary" class="mt-4" @click="planClass" />-->
 </template>
 
 <script setup lang="ts">

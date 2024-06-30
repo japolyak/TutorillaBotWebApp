@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import PlanClassView from '@/views/plan-class-view.vue';
-import TestView from '@/views/test-view.vue';
+import PlanClassView from '@/modules/class-planer/views/plan-class-view.vue';
+import TestView from '@/modules/dev/test-view.vue';
 import Dashboard from '@/components/dashboard.vue';
 import { telegramUserAuthentication } from '@/services/telegram-validation'
 
